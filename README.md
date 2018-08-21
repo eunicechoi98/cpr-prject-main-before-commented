@@ -9,25 +9,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * Main application class.
- */
+
+ * Main application class:
+ 
 public class Main extends Application {
 	
 	public static Stage publicStage;
+	* Called by Application.launch();
+	* Is responsible for setting up the window title and stage 
 
-	/*Called by Application.launch();
-	 * Is responsible for setting up the window title and stage 
-	 * */
     @Override
     public void start(Stage stage) throws Exception{
         stage.setTitle("Quick Refresher Session");
 
-        //stage is an object passed as a parameter to start(), and has method setScene
-        /*Note that:
-         * Stage = Top level window created by JavaFX that contains a scene
-         * Scene = A container for a scene graph, aka a big hierarchy of nodes
-         * 			- Root node -> top node in scene graph
+        * stage is an object passed as a parameter to start(), and has method setScene
+        *Note that:
+        * Stage = Top level window created by JavaFX that contains a scene
+        * Scene = A container for a scene graph, aka a big hierarchy of nodes
+        * 			- Root node -> top node in scene graph
          * 			- parent node -> Panes / controls
          * 			- leaf node -> Buttons/shapes/etc...
          */
