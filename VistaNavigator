@@ -1,0 +1,84 @@
+import javafx.fxml.FXMLLoader;
+
+import java.io.IOException;
+
+/**
+ * Utility class for controlling navigation between vistas.
+ *
+ * All methods on the navigator are static to facilitate
+ * simple access from anywhere in the application.
+ */
+public class VistaNavigator {
+
+    /**
+     * Convenience constants for fxml layouts managed by the navigator.
+     */
+    public static final String MAIN    = "main.fxml";
+    public static final String VISTA_1 = "vista1.fxml";
+    public static final String VISTA_2 = "vista2.fxml";
+    public static final String VISTA_3 = "vista3.fxml";
+    public static final String VISTA_4 = "vista4.fxml";
+    public static final String VISTA_5 = "vista5.fxml";
+    public static final String VISTA_6 = "vista6.fxml";
+    public static final String VISTA_7 = "vista7.fxml";
+    public static final String VISTA_8 = "vista8.fxml";
+    public static final String VISTA_9 = "vista9.fxml";
+    public static final String VISTA_10 = "vista10.fxml";
+    public static final String ForgotCodeVista = "forgotCodeVista.fxml";
+    public static final String ControlIntroVista = "introControlVista.fxml";
+    public static final String TrainingIntroVista = "introTrainingVista.fxml";
+    public static final String EndEarlyVista = "endEarlyVista.fxml";
+    public static final String SaveErrorVista = "saveErrorVista.fxml";
+    public static final String BreakVista = "breakVista.fxml";
+    public static final String FamiliarizeVista = "familiarizeVista.fxml";
+    
+    //Just an easy way to keep track of the current fxml loaded
+    public static String currentVista;
+
+    /** The main application layout controller. 
+     * This is assigned in setMainController below*/
+    public static MainController mainController;
+    
+    //Just returns the string indicating the current vista
+    public static String getCurrentVista() {
+    	return currentVista;
+    }
+
+    /**
+     * Stores the main controller for later use in navigation tasks.
+     * Called from Main.loadMainPane()
+     *
+     * @param mainController the main application layout controller.
+     */
+    public static void setMainController(MainController mainController) {
+        VistaNavigator.mainController = mainController;
+    }
+
+    /**
+     * Loads the vista specified by the fxml file into the
+     * vistaHolder pane of the main application layout.
+     * 
+     * Just think of this function as providing the setVista function of the mainController
+     * with the fxml passed as a parameter
+     *
+     * @param fxml the fxml file to be loaded.
+     */
+    public static void loadVista(String fxml) {
+    	currentVista = fxml;
+        try {
+            mainController.setVista(
+            	/*Same structure as in Main; just loads the fxml
+            	 * from VistaNavigator that corresponds with the method parameter "fxml"
+            	 */
+                FXMLLoader.load(
+                    VistaNavigator.class.getResource(
+                        fxml
+                    )
+                )
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
