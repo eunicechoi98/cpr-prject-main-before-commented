@@ -1,0 +1,112 @@
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+/**
+ * Main application class.
+ */
+public class Main extends Application {
+	
+	public static Stage publicStage;
+
+	/*Called by Application.launch();
+	 * Is responsible for setting up the window title and stage 
+	 * */
+    @Override
+    public void start(Stage stage) throws Exception{
+        stage.setTitle("Quick Refresher Session");
+
+        //stage is an object passed as a parameter to start(), and has method setScene
+        /*Note that:
+         * Stage = Top level window created by JavaFX that contains a scene
+         * Scene = A container for a scene graph, aka a big hierarchy of nodes
+         * 			- Root node -> top node in scene graph
+         * 			- parent node -> Panes / controls
+         * 			- leaf node -> Buttons/shapes/etc...
+         */
+        stage.setScene(
+        		
+        	/*This method will return a Scene object, produced from a Pane object*/
+            createScene(
+            		
+            	//This method creates a Pane object out of the MAIN attribute of VistaNavigator,
+            	//which is the fxml for the main window
+                loadMainPane()
+            )
+        );
+        
+        stage.show();
+        publicStage = stage;
+    }
+    
+
+    /**
+     * Loads the main fxml layout.
+     * Sets up the vista switching VistaNavigator.
+     * Loads the first vista into the fxml layout.
+     * Note that the returned pane from this is used as the
+     * parameter for the createScene method below.
+     *
+     * @return the loaded pane.
+     * @throws IOException if the pane could not be loaded.
+     */
+    private Pane loadMainPane() throws IOException {
+    	//Loader object needed to open and apply fxml files
+        FXMLLoader loader = new FXMLLoader();
+
+        //Loads the fxml file stored at VistaNavigator.MAIN and casts it into a Pane object;
+        //This pane will eventually be used as the scene for the whole application
+        Pane mainPane = (Pane) loader.load(
+            getClass().getResourceAsStream(
+                VistaNavigator.MAIN
+            )
+        );
+
+        //Instantiated MainController object, which is used by main.fxml; this object is the parent
+        //node / root node for the scene graph - every vista is loaded as a child of the mainController object
+        MainController mainController = loader.getController();
+
+        //Sends the mainController object to the vista navigator, allowing easy access
+        //to the object's methods / parameters throughout program
+        VistaNavigator.setMainController(mainController);
+        //Loads the starting vista
+        VistaNavigator.loadVista(VistaNavigator.VISTA_1);
+
+        return mainPane;
+    }
+
+    /**
+     * Creates the main application scene.
+     * In this scenario it takes the Pane object created above as its parameter
+     *
+     * @param mainPane the main application layout.
+     *
+     * @return the created scene.
+     */
+    private Scene createScene(Pane mainPane) {
+    	//Uses the pane from above as the scene for the application
+        Scene scene = new Scene(
+            mainPane
+        );
+
+        //Calls the css stylesheet and applies the settings
+        scene.getStylesheets().setAll(
+            getClass().getResource("vista.css").toExternalForm()
+        );
+        return scene;
+    }
+
+    /*The main function of the whole application.
+     * Responsible for calling loadCSV, which just initializes the study codes from 1-60,
+     * and calling the launch() method (which is inherited from the Application class that Main extends).
+     * Application.launch() does a bunch of stuff then calls Application.start(), which was overridden above
+     */
+    public static void main(String[] args) {
+    	DataIO.loadCSV();
+        launch(args);
+    }
+}
